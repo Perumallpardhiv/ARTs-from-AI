@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(const MyApp());
 }
+const bgcolor = Color(0xff191919);
+const btncolor = Color(0xff6B4FD8);
+const whitecolor = Colors.white;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
