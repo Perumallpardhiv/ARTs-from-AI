@@ -1,5 +1,6 @@
 import 'package:ai_art/aoifetch.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class mainScreen extends StatefulWidget {
   const mainScreen({super.key});
@@ -15,6 +16,7 @@ class _mainScreenState extends State<mainScreen> {
   TextEditingController controller = TextEditingController();
   String img = '';
   var isLoading = true;
+  var p = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,26 @@ class _mainScreenState extends State<mainScreen> {
       backgroundColor: Colors.brown,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.photo_album),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: Colors.brown[600],
+              ),
+              onPressed: () {},
+              label: Text("My Arts"),
+            ),
+          ),
+        ],
         elevation: 0,
         backgroundColor: Colors.brown,
-        centerTitle: true,
         title: Text(
-          "AI the Drawer",
+          "AI the Image Generator",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -109,6 +126,7 @@ class _mainScreenState extends State<mainScreen> {
                             dropValue!.isNotEmpty) {
                           setState(() {
                             isLoading = true;
+                            p = 1;
                           });
                           var urllink = await apiFetch.generateImage(
                             controller.text,
@@ -117,6 +135,7 @@ class _mainScreenState extends State<mainScreen> {
                           setState(() {
                             isLoading = false;
                             img = urllink;
+                            p = 1;
                           });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -143,7 +162,7 @@ class _mainScreenState extends State<mainScreen> {
             ),
             Expanded(
               flex: 6,
-              child: !isLoading
+              child: !isLoading && p == 1
                   ? Container(
                       margin: EdgeInsets.all(5),
                       alignment: Alignment.center,
@@ -172,24 +191,60 @@ class _mainScreenState extends State<mainScreen> {
                         ],
                       ),
                     )
-                  : Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.brown[400],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: CircularProgressIndicator(),
+                  : p == 1
+                      ? Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.brown[400],
                           ),
-                          Center(
-                            child: Text("Image is Loading"),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Lottie.asset('assets/Loading.json'),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Center(
+                                child: Text(
+                                  "Image is Loading",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                    color: Colors.brown[900],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        )
+                      : Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.brown[400],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Lottie.asset('assets/Paperplane.json'),
+                              ),
+                              Center(
+                                child: Text(
+                                  "Type Something in above fields",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                    color: Colors.brown[900],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
             ),
             Expanded(
               child: Column(
@@ -218,7 +273,8 @@ class _mainScreenState extends State<mainScreen> {
                       ElevatedButton.icon(
                         icon: Icon(Icons.share),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
