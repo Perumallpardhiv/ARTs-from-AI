@@ -5,6 +5,7 @@ import 'package:ai_art/aoifetch.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -273,7 +274,48 @@ class _mainScreenState extends State<mainScreen> {
                             ),
                             backgroundColor: Colors.brown[600],
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            var result = await Permission.storage.request();
+                            var result1 =
+                                await Permission.accessMediaLocation.request();
+                            var result2 = await Permission.manageExternalStorage
+                                .request();
+
+                            if (result.isGranted &&
+                                result1.isGranted &&
+                                result2.isGranted) {
+                              final foldername = "AI Image";
+                              final path = await Directory(
+                                "storage/emulated/0/$foldername",
+                              );
+
+                              if (await path.exists()) {
+                                print(path.path);
+                              } else {
+                                await Directory(
+                                  "storage/emulated/0/$foldername",
+                                ).create(recursive: true);
+                              }
+
+                              await screenshotController.captureAndSave(
+                                path.path,
+                                delay: Duration(milliseconds: 100),
+                                fileName:
+                                    "${DateTime.now().millisecondsSinceEpoch}.png",
+                                // pixelRatio: 1.0,
+                              );
+                              print(DateTime.now().millisecondsSinceEpoch);
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("Downloded to ${path.path}"),
+                              ));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text("Permission is denied")));
+                            }
+                          },
                           label: Text("Download"),
                         ),
                       ),
