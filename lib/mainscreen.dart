@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ai_art/aoifetch.dart';
+import 'package:ai_art/my_arts.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
@@ -43,7 +44,9 @@ class _mainScreenState extends State<mainScreen> {
                 ),
                 backgroundColor: Colors.brown[600],
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => myArts()));
+              },
               label: Text("My Arts"),
             ),
           ),
