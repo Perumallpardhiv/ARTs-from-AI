@@ -346,7 +346,7 @@ class _mainScreenState extends State<mainScreen> {
                               await File('${directory.path}/image.png')
                                   .create();
                           if (ssImage != null) {
-                            imgPath.writeAsBytesSync(ssImage!);
+                            imgPath.writeAsBytesSync(ssImage);
                             final text = 'AI Generated Image';
                             await Share.shareFiles([imgPath.path], text: text);
 
