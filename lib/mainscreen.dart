@@ -37,7 +37,7 @@ class _mainScreenState extends State<mainScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton.icon(
-              icon: Icon(Icons.photo_album),
+              icon: const Icon(Icons.photo_album),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -45,15 +45,16 @@ class _mainScreenState extends State<mainScreen> {
                 backgroundColor: Colors.brown[600],
               ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => myArts()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const myArts()));
               },
-              label: Text("My Arts"),
+              label: const Text("My Arts"),
             ),
           ),
         ],
         elevation: 0,
         backgroundColor: Colors.brown,
-        title: Text(
+        title: const Text(
           "AI - Image Generator",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -62,7 +63,7 @@ class _mainScreenState extends State<mainScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(13),
+        padding: const EdgeInsets.all(13),
         child: Column(
           children: [
             Expanded(
@@ -72,16 +73,15 @@ class _mainScreenState extends State<mainScreen> {
                   Expanded(
                     child: Container(
                       height: 46,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 3),
                       decoration: BoxDecoration(
                         color: Colors.brown[50],
                         borderRadius: BorderRadius.circular(13),
                       ),
                       child: TextFormField(
                         controller: controller,
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "eg: A lion on Elephant",
                           hintStyle: TextStyle(fontSize: 16),
                           border: InputBorder.none,
@@ -89,21 +89,22 @@ class _mainScreenState extends State<mainScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Container(
                     height: 46,
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.brown[50],
                       borderRadius: BorderRadius.circular(13),
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton(
-                        icon: Icon(Icons.expand_more),
+                        icon: const Icon(Icons.expand_more),
                         value: dropValue,
-                        hint: Text(
+                        hint: const Text(
                           "Select Size",
                           style: TextStyle(fontSize: 10),
                         ),
@@ -113,7 +114,7 @@ class _mainScreenState extends State<mainScreen> {
                             value: values[index],
                             child: Text(
                               sizes[index],
-                              style: TextStyle(fontSize: 13),
+                              style: const TextStyle(fontSize: 13),
                             ),
                           ),
                         ),
@@ -125,7 +126,7 @@ class _mainScreenState extends State<mainScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   SizedBox(
@@ -150,7 +151,7 @@ class _mainScreenState extends State<mainScreen> {
                           });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text("Please enter some Text"),
                             ),
                           );
@@ -162,7 +163,7 @@ class _mainScreenState extends State<mainScreen> {
                         ),
                         backgroundColor: Colors.brown[700],
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.send,
                         size: 19,
                       ),
@@ -175,11 +176,11 @@ class _mainScreenState extends State<mainScreen> {
               flex: 6,
               child: !isLoading && p == 1
                   ? Container(
-                      margin: EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         boxShadow: [
-                          BoxShadow(
+                          const BoxShadow(
                             color: Colors.brown,
                             blurRadius: 8,
                             spreadRadius: 2,
@@ -218,7 +219,7 @@ class _mainScreenState extends State<mainScreen> {
                               Center(
                                 child: Lottie.asset('assets/Loading.json'),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Center(
@@ -269,9 +270,9 @@ class _mainScreenState extends State<mainScreen> {
                     children: [
                       Expanded(
                         child: ElevatedButton.icon(
-                          icon: Icon(Icons.download),
+                          icon: const Icon(Icons.download),
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -287,8 +288,8 @@ class _mainScreenState extends State<mainScreen> {
                             if (result.isGranted &&
                                 result1.isGranted &&
                                 result2.isGranted) {
-                              final foldername = "AI Image";
-                              final path = await Directory(
+                              const foldername = "AI Image";
+                              final path = Directory(
                                 "storage/emulated/0/$foldername",
                               );
 
@@ -302,68 +303,63 @@ class _mainScreenState extends State<mainScreen> {
 
                               await screenshotController.captureAndSave(
                                 path.path,
-                                delay: Duration(milliseconds: 100),
+                                delay: const Duration(milliseconds: 100),
                                 fileName:
                                     "${DateTime.now().millisecondsSinceEpoch}.png",
-                                // pixelRatio: 1.0,
                               );
                               print(DateTime.now().millisecondsSinceEpoch);
 
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text("Downloded to ${path.path}"),
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("Downloded to ${path.path}"),
+                                ),
+                              );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text("Permission is denied")));
+                                const SnackBar(
+                                  content: Text("Permission is denied"),
+                                ),
+                              );
                             }
                           },
-                          label: Text("Download"),
+                          label: const Text("Download"),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       ElevatedButton.icon(
-                        icon: Icon(Icons.share),
+                        icon: const Icon(Icons.share),
                         style: ElevatedButton.styleFrom(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           backgroundColor: Colors.brown[600],
                         ),
                         onPressed: () async {
-                          await screenshotController
-                              .capture(
-                                  pixelRatio: 1.0,
-                                  delay: Duration(milliseconds: 100))
-                              .then(
-                            (Uint8List? img) async {
-                              if (img != null) {
-                                final directory =
-                                    (await getApplicationDocumentsDirectory())
-                                        .path;
-                                final filename = "share.png";
-                                final imgpath =
-                                    await File("${directory}/${filename}")
-                                        .create();
-                                await imgpath.writeAsBytes(img);
+                          final ssImage = await screenshotController.capture();
+                          final directory =
+                              await getApplicationDocumentsDirectory();
+                          final imgPath =
+                              await File('${directory.path}/image.png')
+                                  .create();
+                          if (ssImage != null) {
+                            imgPath.writeAsBytesSync(ssImage!);
+                            final text = 'AI Generated Image';
+                            await Share.shareFiles([imgPath.path], text: text);
 
-                                Share.shareFiles([imgpath.path],
-                                    text: "Generated by AI");
-                              } else {
-                                print("Failed to take screenshot");
-                              }
-                            },
-                          );
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Image Shared")));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Image Shared"),
+                              ),
+                            );
+                          } else {
+                            print("Failed to take screenshot");
+                          }
                         },
-                        label: Text("Share"),
+                        label: const Text("Share"),
                       ),
                     ],
                   ),

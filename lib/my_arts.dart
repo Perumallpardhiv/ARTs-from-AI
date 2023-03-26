@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ai_art/viewImg.dart';
 import 'package:flutter/material.dart';
 
 class myArts extends StatefulWidget {
@@ -14,8 +15,11 @@ class _myArtsState extends State<myArts> {
 
   getImages() {
     final direc = Directory("storage/emulated/0/AI Image");
-    imgsList = direc.listSync();
+    setState(() {
+      imgsList = direc.listSync();
+    });
     print(imgsList);
+    return null;
   }
 
   @override
@@ -41,24 +45,40 @@ class _myArtsState extends State<myArts> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
+      body: RefreshIndicator(
+        onRefresh: () => getImages(),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+            ),
+            itemCount: imgsList.length,
+            itemBuilder: (context, index) {
+              return Hero(
+                tag: imgsList[index],
+                child: GestureDetector(
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => viewImage(imgsList[index]),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.file(imgsList[index], fit: BoxFit.cover),
+                  ),
+                ),
+              );
+            },
           ),
-          itemCount: imgsList.length,
-          itemBuilder: (context, index) {
-            return Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Image.file(imgsList[index], fit: BoxFit.cover,),
-            );
-          },
         ),
       ),
     );
