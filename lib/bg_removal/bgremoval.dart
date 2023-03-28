@@ -23,9 +23,22 @@ class _bgRemovalState extends State<bgRemoval> {
   bool isLoading = false;
   ScreenshotController screenshotController = ScreenshotController();
 
-  Future<void> pickImage() async {
+  Future<void> takeImage() async {
     final img = await ImagePicker().pickImage(
       source: ImageSource.camera,
+      imageQuality: 100,
+    );
+
+    if (img != null) {
+      imagePath = img.path;
+      pickedImage = true;
+      setState(() {});
+    } else {}
+  }
+
+  Future<void> pickImage() async {
+    final img = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
       imageQuality: 100,
     );
 
@@ -80,7 +93,7 @@ class _bgRemovalState extends State<bgRemoval> {
             ? IconButton(
                 icon: Transform(
                   alignment: Alignment.center,
-                  transform: Matrix4.rotationY(pi)..rotateZ(7 * pi/4),
+                  transform: Matrix4.rotationY(pi)..rotateZ(7 * pi / 4),
                   child: const Icon(Icons.replay_rounded),
                 ),
                 onPressed: () {
@@ -131,19 +144,40 @@ class _bgRemovalState extends State<bgRemoval> {
                       File(imagePath),
                     ),
                   )
-                : Container(
-                    padding: const EdgeInsets.all(45),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      border: Border.all(color: Colors.black),
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.brown[700]),
-                      onPressed: () {
-                        pickImage();
-                      },
-                      child: const Text("Pick Image"),
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 150 ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(45),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.brown[700]),
+                              onPressed: () {
+                                takeImage();
+                              },
+                              child: const Text("Camera"),
+                            ),
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.brown[700]),
+                              onPressed: () {
+                                pickImage();
+                              },
+                              child: const Text("Gallery"),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
       ),
