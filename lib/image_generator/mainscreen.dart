@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:ai_art/aoifetch.dart';
-import 'package:ai_art/my_arts.dart';
+import 'package:ai_art/image_generator/aoifetch.dart';
+import 'package:ai_art/image_generator/my_arts.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,6 +25,66 @@ class _mainScreenState extends State<mainScreen> {
   var isLoading = true;
   var p = 0;
   ScreenshotController screenshotController = ScreenshotController();
+
+  download() async {
+    var result = await Permission.storage.request();
+    var result1 = await Permission.accessMediaLocation.request();
+    var result2 = await Permission.manageExternalStorage.request();
+
+    if (result.isGranted && result1.isGranted && result2.isGranted) {
+      const foldername = "AI Image";
+      var fileName = "${DateTime.now().millisecondsSinceEpoch}.png";
+
+      final directory = Directory("storage/emulated/0/$foldername");
+
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+
+      await screenshotController.captureAndSave(
+        directory.path,
+        delay: const Duration(milliseconds: 100),
+        fileName: fileName,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Downloded to ${directory.path}"),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Permission is denied"),
+        ),
+      );
+    }
+  }
+
+  shareImg() async {
+    final ssImage = await screenshotController.capture();
+    final directory = await getApplicationDocumentsDirectory();
+    final imgPath = await File('${directory.path}/image.png').create();
+    const text = 'AI Generated Image';
+
+    if (ssImage != null) {
+      imgPath.writeAsBytesSync(ssImage);
+      await Share.shareFiles([imgPath.path], text: text);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Image Shared"),
+        ),
+      );
+    } else {
+      print("Failed to take screenshot");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Failed to take share"),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -279,48 +338,7 @@ class _mainScreenState extends State<mainScreen> {
                             backgroundColor: Colors.brown[600],
                           ),
                           onPressed: () async {
-                            var result = await Permission.storage.request();
-                            var result1 =
-                                await Permission.accessMediaLocation.request();
-                            var result2 = await Permission.manageExternalStorage
-                                .request();
-
-                            if (result.isGranted &&
-                                result1.isGranted &&
-                                result2.isGranted) {
-                              const foldername = "AI Image";
-                              final path = Directory(
-                                "storage/emulated/0/$foldername",
-                              );
-
-                              if (await path.exists()) {
-                                print(path.path);
-                              } else {
-                                await Directory(
-                                  "storage/emulated/0/$foldername",
-                                ).create(recursive: true);
-                              }
-
-                              await screenshotController.captureAndSave(
-                                path.path,
-                                delay: const Duration(milliseconds: 100),
-                                fileName:
-                                    "${DateTime.now().millisecondsSinceEpoch}.png",
-                              );
-                              print(DateTime.now().millisecondsSinceEpoch);
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Downloded to ${path.path}"),
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Permission is denied"),
-                                ),
-                              );
-                            }
+                            download();
                           },
                           label: const Text("Download"),
                         ),
@@ -339,25 +357,7 @@ class _mainScreenState extends State<mainScreen> {
                           backgroundColor: Colors.brown[600],
                         ),
                         onPressed: () async {
-                          final ssImage = await screenshotController.capture();
-                          final directory =
-                              await getApplicationDocumentsDirectory();
-                          final imgPath =
-                              await File('${directory.path}/image.png')
-                                  .create();
-                          if (ssImage != null) {
-                            imgPath.writeAsBytesSync(ssImage);
-                            final text = 'AI Generated Image';
-                            await Share.shareFiles([imgPath.path], text: text);
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Image Shared"),
-                              ),
-                            );
-                          } else {
-                            print("Failed to take screenshot");
-                          }
+                          shareImg();
                         },
                         label: const Text("Share"),
                       ),

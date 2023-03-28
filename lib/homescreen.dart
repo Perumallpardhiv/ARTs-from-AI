@@ -1,6 +1,6 @@
 import 'dart:math';
-
-import 'package:ai_art/mainscreen.dart';
+import 'package:ai_art/bg_removal/bgremoval.dart';
+import 'package:ai_art/image_generator/mainscreen.dart';
 import 'package:ai_art/pulseAnimator.dart';
 import 'package:flutter/material.dart';
 
@@ -37,46 +37,46 @@ class _homeScreenState extends State<homeScreen> {
                         width: 6,
                       ),
                       shape: BoxShape.circle,
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage('assets/robot.png'),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
               Padding(
                 padding: const EdgeInsets.all(13.0),
                 child: RawMaterialButton(
                   elevation: 4,
                   fillColor: Colors.brown.shade500,
                   splashColor: Colors.brown.shade300,
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                   ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => mainScreen(),
+                        builder: (context) => const mainScreen(),
                       ),
                     );
                   },
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Transform(
                           transform: Matrix4.rotationY(pi),
                           alignment: Alignment.center,
-                          child: Icon(
+                          child: const Icon(
                             Icons.imagesearch_roller_outlined,
                             color: Color.fromARGB(255, 0, 0, 0),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        pulseAnimator(
+                        const SizedBox(width: 10),
+                        const pulseAnimator(
                           child: Text(
                             "AI IMAGE GENERATOR",
                             style: TextStyle(
@@ -97,25 +97,32 @@ class _homeScreenState extends State<homeScreen> {
                   elevation: 4,
                   fillColor: Colors.brown.shade500,
                   splashColor: Colors.brown.shade300,
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const bgRemoval(),
+                      ),
+                    );
+                  },
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Transform(
                           transform: Matrix4.rotationY(pi),
                           alignment: Alignment.center,
-                          child: Icon(
+                          child: const Icon(
                             Icons.image_outlined,
                             color: Color.fromARGB(255, 0, 0, 0),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        pulseAnimator(
+                        const SizedBox(width: 10),
+                        const pulseAnimator(
                           child: Text(
                             "IMAGE BACKGROUND REMOVE",
                             style: TextStyle(

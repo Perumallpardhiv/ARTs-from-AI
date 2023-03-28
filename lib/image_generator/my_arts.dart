@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ai_art/viewImg.dart';
+import 'package:ai_art/image_generator/viewImg.dart';
 import 'package:flutter/material.dart';
 
 class myArts extends StatefulWidget {
