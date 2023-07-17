@@ -21,6 +21,7 @@ class _bgRemovalState extends State<bgRemoval> {
   String imagePath = '';
   Uint8List? image;
   bool isLoading = false;
+  var value = 0.5;
   ScreenshotController screenshotController = ScreenshotController();
 
   Future<void> takeImage() async {
@@ -128,12 +129,9 @@ class _bgRemovalState extends State<bgRemoval> {
       ),
       body: Center(
         child: removedbg
-            ? BeforeAfter(
-                afterImage: Screenshot(
-                  controller: screenshotController,
-                  child: Image.memory(image!),
-                ),
-                beforeImage: Image.file(File(imagePath)),
+            ? Screenshot(
+                controller: screenshotController,
+                child: Image.memory(image!),
               )
             : pickedImage
                 ? GestureDetector(
@@ -145,7 +143,8 @@ class _bgRemovalState extends State<bgRemoval> {
                     ),
                   )
                 : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 150 ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 45, vertical: 150),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius:
@@ -190,6 +189,7 @@ class _bgRemovalState extends State<bgRemoval> {
                   isLoading = true;
                   setState(() {});
                   image = await Api.removebg(imagePath);
+                  print(image.toString());
                   isLoading = false;
                   if (image != null) {
                     removedbg = true;

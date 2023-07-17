@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:ai_art/image_generator/aoifetch.dart';
 import 'package:ai_art/image_generator/my_arts.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +204,8 @@ class _mainScreenState extends State<mainScreen> {
                           );
                           setState(() {
                             isLoading = false;
-                            img = urllink;
+                            img = urllink ??
+                                "https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=2000";
                             p = 1;
                           });
                         } else {
